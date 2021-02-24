@@ -1,59 +1,16 @@
 import "./styles.css";
 import React, { useState, useReducer } from "react";
 import { uuid } from "uuidv4";
-
-const ADD = "ADD";
-const DEL = "DEL";
-const COMPLETE = "COMPLETE";
-const UNCOMPLETE = "UNCOMPLETE";
+import reducer, {
+  ADD,
+  COMPLETE,
+  DEL,
+  intialValue,
+  UNCOMPLETE
+} from "./components/reducer";
 
 export default function App() {
   const [inputText, setInputText] = useState("");
-  const intialValue = {
-    unCompletedTodos: [],
-    completedTodos: []
-  };
-
-  const reducer = (state, action) => {
-    switch (action.type) {
-      case ADD:
-        return {
-          ...state,
-          unCompletedTodos: [...state.unCompletedTodos, action.payload]
-        };
-      case DEL:
-        console.log(action.payload);
-
-        return {
-          ...state,
-          unCompletedTodos: state.unCompletedTodos.filter(
-            ({ id }) => id !== action.payload
-          ),
-          completedTodos: state.completedTodos.filter(
-            ({ id }) => id !== action.payload
-          )
-        };
-      case COMPLETE:
-        return {
-          ...state,
-          unCompletedTodos: state.unCompletedTodos.filter(
-            ({ id }) => id !== action.payload.id
-          ),
-          completedTodos: [...state.completedTodos, action.payload]
-        };
-      case UNCOMPLETE:
-        return {
-          ...state,
-          completedTodos: state.completedTodos.filter(
-            ({ id }) => id !== action.payload.id
-          ),
-          unCompletedTodos: [...state.unCompletedTodos, action.payload]
-        };
-      default:
-        return state;
-    }
-  };
-
   const [state, dispatch] = useReducer(reducer, intialValue);
   const submitHandler = (event) => {
     event.preventDefault();
